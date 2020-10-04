@@ -6,7 +6,7 @@ import Register from './components/Auth/Register/Register';
 const AppRoutes = () => (
   <Switch>
     <Route path="/" exact component={Login} />
-    <Route exact path="/register" render={() => <Register name="dude" />} />
+    <Route exact path="/register" component={Register} />
   </Switch>
 );
 
