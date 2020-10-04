@@ -11,65 +11,100 @@ import {
 import { Link } from 'react-router-dom';
 import classes from './Register.module.scss';
 
-interface FormControl {
-  value: string;
-  validation: { valid: boolean; touched: boolean; required: boolean };
+enum ErrorTypes {
+  MismatchedPassword
+}
+
+interface Error {
+  type: ErrorTypes;
+  message: string;
 }
 
 const Register = () => {
   const [formValues, setFormValues] = useState({
-    username: {
-      value: '',
-      validation: {
-        valid: false,
-        touched: false,
-        required: true,
-        focused: false
-      }
-    },
-    email: {
-      value: '',
-      validation: {
-        valid: false,
-        touched: false,
-        required: true,
-        focused: false
-      }
-    },
-    password: {
-      value: '',
-      validation: {
-        valid: false,
-        touched: false,
-        required: true,
-        focused: false
-      }
-    },
-    confirmPassowrd: {
-      value: '',
-      validation: {
-        valid: false,
-        touched: false,
-        required: true,
-        focused: false
+    controls: {
+      username: {
+        value: '',
+        validation: {
+          valid: false,
+          touched: false,
+          required: true
+        }
+      },
+      email: {
+        value: '',
+        validation: {
+          valid: false,
+          touched: false,
+          required: true
+        }
+      },
+      password: {
+        value: '',
+        validation: {
+          valid: false,
+          touched: false,
+          required: true
+        }
+      },
+      confirmPassowrd: {
+        value: '',
+        validation: {
+          valid: false,
+          touched: false,
+          required: true
+        }
       }
     }
   });
 
-  const isConfirmPasswordValid = (confirmPassword: string) => {
-    if (
-      formValues.password.validation.touched &&
-      formValues.confirmPassowrd.validation.touched
-    ) {
-      if (formValues.password.value === formValues.confirmPassowrd.value) {
+  const [errors, setErrors] = useState([] as Error[]);
+  const [loading, setLoading] = useState(false);
+
+  const isConfirmPasswordValid = (
+    password: string,
+    confirmPassword: string
+  ) => {
+    if (formValues.controls.password.validation.touched) {
+      if (formValues.controls.password.value === confirmPassword) {
         return true;
       }
     }
     return false;
   };
 
+  const isFormValid = () => {
+    if (
+      !isConfirmPasswordValid(
+        formValues.controls.password.value,
+        formValues.controls.confirmPassowrd.value
+      )
+    ) {
+      if (!errors.some((e) => e.type === ErrorTypes.MismatchedPassword)) {
+        setErrors([
+          ...errors,
+          {
+            type: ErrorTypes.MismatchedPassword,
+            message: `Password and confirm password don't match`
+          }
+        ]);
+      }
+      return false;
+    }
+    setErrors([]);
+    return true;
+  };
+
+  const showErrors = (errList: Error[]) => {
+    return errList.map((e, i) => <p key={i}>{e.message}</p>);
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    setLoading(true);
+    if (isFormValid()) {
+      event.preventDefault();
+    }
+    setLoading(false);
   };
 
   return (
@@ -89,21 +124,20 @@ const Register = () => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFormValues({
                   ...formValues,
-                  username: {
-                    ...formValues.username,
-                    value: e.target.value,
-                    validation: {
-                      ...formValues.username.validation,
-                      touched: true,
-                      valid: e.target.value.length > 6
+                  controls: {
+                    ...formValues.controls,
+                    username: {
+                      ...formValues.controls.username,
+                      value: e.target.value,
+                      validation: {
+                        ...formValues.controls.username.validation,
+                        touched: true,
+                        valid: e.target.value.length > 6
+                      }
                     }
                   }
                 });
               }}
-              error={
-                formValues.username.validation.touched &&
-                !formValues.username.validation.valid
-              }
               required
               fluid
               name="username"
@@ -111,20 +145,23 @@ const Register = () => {
               iconPosition="left"
               placeholder="Username"
               type="text"
-              value={formValues.username.value}
+              value={formValues.controls.username.value}
             />
 
             <Form.Input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFormValues({
                   ...formValues,
-                  email: {
-                    ...formValues.email,
-                    value: e.target.value,
-                    validation: {
-                      ...formValues.email.validation,
-                      touched: true,
-                      valid: e.target.value.length > 6
+                  controls: {
+                    ...formValues.controls,
+                    email: {
+                      ...formValues.controls.email,
+                      value: e.target.value,
+                      validation: {
+                        ...formValues.controls.email.validation,
+                        touched: true,
+                        valid: e.target.value.length > 6
+                      }
                     }
                   }
                 });
@@ -136,20 +173,23 @@ const Register = () => {
               iconPosition="left"
               placeholder="Email"
               type="email"
-              value={formValues.email.value}
+              value={formValues.controls.email.value}
             />
 
             <Form.Input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFormValues({
                   ...formValues,
-                  password: {
-                    ...formValues.password,
-                    value: e.target.value,
-                    validation: {
-                      ...formValues.password.validation,
-                      touched: true,
-                      valid: e.target.value.length > 6
+                  controls: {
+                    ...formValues.controls,
+                    password: {
+                      ...formValues.controls.password,
+                      value: e.target.value,
+                      validation: {
+                        ...formValues.controls.password.validation,
+                        touched: true,
+                        valid: e.target.value.length > 6
+                      }
                     }
                   }
                 });
@@ -161,22 +201,23 @@ const Register = () => {
               iconPosition="left"
               placeholder="Password"
               type="password"
-              value={formValues.password.value}
+              value={formValues.controls.password.value}
             />
 
             <Form.Input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setFormValues({
                   ...formValues,
-                  confirmPassowrd: {
-                    ...formValues.confirmPassowrd,
-                    value: e.target.value,
-                    validation: {
-                      ...formValues.confirmPassowrd.validation,
-                      touched: true,
-                      valid:
-                        e.target.value.length > 6 &&
-                        isConfirmPasswordValid(e.target.value)
+                  controls: {
+                    ...formValues.controls,
+                    confirmPassowrd: {
+                      ...formValues.controls.confirmPassowrd,
+                      value: e.target.value,
+                      validation: {
+                        ...formValues.controls.confirmPassowrd.validation,
+                        touched: true,
+                        valid: true
+                      }
                     }
                   }
                 });
@@ -188,10 +229,22 @@ const Register = () => {
               iconPosition="left"
               placeholder="Confirm password"
               type="password"
-              value={formValues.confirmPassowrd.value}
+              value={formValues.controls.confirmPassowrd.value}
             />
 
-            <Button color="orange" fluid size="large">
+            {errors.length > 0 && (
+              <Message>
+                <h3>Errors</h3>
+                {showErrors(errors)}
+              </Message>
+            )}
+
+            <Button
+              className={loading ? 'loading disabled' : ''}
+              color="orange"
+              fluid
+              size="large"
+            >
               Submit
             </Button>
 
