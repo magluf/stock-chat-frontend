@@ -10,9 +10,11 @@ import {
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import classes from './Register.module.scss';
+import { IUser, createUser } from '../../../api/UserAPI';
 
 enum ErrorTypes {
-  MismatchedPassword
+  MismatchedPassword,
+  APIError
 }
 
 interface Error {
@@ -61,10 +63,7 @@ const Register = () => {
   const [errors, setErrors] = useState([] as Error[]);
   const [loading, setLoading] = useState(false);
 
-  const isConfirmPasswordValid = (
-    password: string,
-    confirmPassword: string
-  ) => {
+  const isConfirmPasswordValid = (confirmPassword: string) => {
     if (formValues.controls.password.validation.touched) {
       if (formValues.controls.password.value === confirmPassword) {
         return true;
@@ -74,18 +73,14 @@ const Register = () => {
   };
 
   const isFormValid = () => {
-    if (
-      !isConfirmPasswordValid(
-        formValues.controls.password.value,
-        formValues.controls.confirmPassowrd.value
-      )
-    ) {
+    if (!isConfirmPasswordValid(formValues.controls.confirmPassowrd.value)) {
       if (!errors.some((e) => e.type === ErrorTypes.MismatchedPassword)) {
+        setLoading(false);
         setErrors([
           ...errors,
           {
             type: ErrorTypes.MismatchedPassword,
-            message: `Password and confirm password don't match`
+            message: `Password and confirm password don't match.`
           }
         ]);
       }
@@ -99,10 +94,31 @@ const Register = () => {
     return errList.map((e, i) => <p key={i}>{e.message}</p>);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    event.preventDefault();
     if (isFormValid()) {
-      event.preventDefault();
+      const newUser: IUser = {
+        username: formValues.controls.username.value,
+        email: formValues.controls.email.value,
+        password: formValues.controls.password.value
+      };
+
+      try {
+        const res = await createUser(newUser);
+        console.log('handleSubmit -> res', res);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setErrors([
+          {
+            type: ErrorTypes.APIError,
+            message: err.response
+              ? err.response.data.message
+              : `Error registering user.`
+          }
+        ]);
+      }
     }
     setLoading(false);
   };
@@ -233,7 +249,7 @@ const Register = () => {
             />
 
             {errors.length > 0 && (
-              <Message>
+              <Message className="ui red message">
                 <h3>Errors</h3>
                 {showErrors(errors)}
               </Message>
