@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
 import ColorPanel from '../../components/ColorPanel/ColorPanel';
-import SidePanel from '../../components/SidePanel/SidePanel';
+import SidePanel from '../SidePanel/SidePanel';
 import Messages from '../../components/Messages/Messages';
 import MetaPanel from '../../components/MetaPanel/MetaPanel';
 import { AppState } from '../../store/store';
