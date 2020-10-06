@@ -2,7 +2,9 @@ import React from 'react';
 import { Grid, Header, Icon, Dropdown } from 'semantic-ui-react';
 
 const UserPanel = () => {
-  const handleSignOut = () => {};
+  const handleSignOut = () => {
+    console.log('Logging out...');
+  };
 
   const dropDownOptions = () => [
     {
