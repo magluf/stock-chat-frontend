@@ -1,9 +1,17 @@
 import React from 'react';
 import { Grid, Header, Icon, Dropdown } from 'semantic-ui-react';
+import { logout } from '../../api/AuthAPI';
+import { User } from '../../store/ducks/user/types';
 
-const UserPanel = () => {
-  const handleSignOut = () => {
-    console.log('Logging out...');
+interface IUserPalenProps {
+  currentUser: User | null;
+  clearUser: () => void;
+}
+
+const UserPanel = (props: IUserPalenProps) => {
+  const handleSignOut = async () => {
+    await logout();
+    props.clearUser();
   };
 
   const dropDownOptions = () => [
@@ -11,7 +19,7 @@ const UserPanel = () => {
       key: 'userInfo',
       text: (
         <span>
-          Signed in as <strong>User</strong>
+          Signed in as <strong>{props.currentUser?.username}</strong>
         </span>
       ),
       disabled: true

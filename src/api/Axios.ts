@@ -7,4 +7,6 @@ const instance = axios.create({
       : process.env.REACT_APP_DEV_API
 });
 
+instance.defaults.withCredentials = true;
+
 export default instance;

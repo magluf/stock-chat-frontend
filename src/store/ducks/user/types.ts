@@ -1,12 +1,12 @@
 export enum UserActionTypes {
-  SET_USER = '[User] Set current user'
+  SET_USER = '[User] Set current user',
+  CLEAR_USER = '[User] Clear user'
 }
 
 export interface User {
   id: string;
   username: string;
   email: string;
-  token: string;
 }
 
 export interface UserState {
