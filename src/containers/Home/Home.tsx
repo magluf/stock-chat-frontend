@@ -12,9 +12,11 @@ import * as UserActions from '../../store/ducks/user/actions';
 import { User } from '../../store/ducks/user/types';
 import { isLoggedIn } from '../../api/AuthAPI';
 import Spinner from '../../components/UI/Spinner';
+import { Channel } from '../../store/ducks/channel/types';
 
 interface IHomeProps {
   currentUser: User | null;
+  channels: Channel[];
   clearUser: () => void;
   setUser: (user: User) => void;
 }
@@ -54,6 +56,7 @@ const Home = (props: IHomeProps) => {
           <SidePanel
             clearUser={props.clearUser}
             currentUser={props.currentUser}
+            channels={props.channels}
           />
         </Grid.Column>
         <Grid.Column style={{ marginLeft: 320 }}>
@@ -72,7 +75,8 @@ const Home = (props: IHomeProps) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  currentUser: state.user.currentUser
+  currentUser: state.user.currentUser,
+  channels: state.channel.channels
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
