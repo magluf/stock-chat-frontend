@@ -6,7 +6,8 @@ import Home from './containers/Home/Home';
 
 const AppRoutes = () => (
   <Switch>
-    <Route exact path="/" component={Home} />
+    <Route exact path="/" component={Login} />
+    <Route exact path="/home" component={Home} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
     <Redirect from="*" to="/login" />

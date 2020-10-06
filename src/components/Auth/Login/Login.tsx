@@ -68,7 +68,6 @@ const Login = (props: any) => {
 
     try {
       const res = await login(loginInfo);
-      console.log('handleSubmit -> res', res.data.data);
       const currentUser: User = res.data.data;
       props.setUser(currentUser);
       setLoading(false);
@@ -87,7 +86,7 @@ const Login = (props: any) => {
   };
 
   return loggedIn ? (
-    <Redirect to="/" />
+    <Redirect to="/home" />
   ) : (
     <Grid className={classes.Login} textAlign="center" verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
