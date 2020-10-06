@@ -8,9 +8,14 @@ import {
   Message,
   Icon
 } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import classes from './Login.module.scss';
 import { ILoginInfo, login } from '../../../api/AuthAPI';
+import * as UserActions from '../../../store/ducks/user/actions';
+import { User } from '../../../store/ducks/user/types';
+import { AppState } from '../../../store/store';
 
 enum ErrorTypes {
   MismatchedPassword,
@@ -22,7 +27,7 @@ interface Error {
   message: string;
 }
 
-const Login = () => {
+const Login = (props: any) => {
   const [formValues, setFormValues] = useState({
     controls: {
       username: {
@@ -46,6 +51,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState([] as Error[]);
   const [loading, setLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const showErrors = (errList: Error[]) => {
     return errList.map((e, i) => <p key={i}>{e.message}</p>);
@@ -62,8 +68,11 @@ const Login = () => {
 
     try {
       const res = await login(loginInfo);
-      console.log('handleSubmit -> res', res);
+      console.log('handleSubmit -> res', res.data.data);
+      const currentUser: User = res.data.data;
+      props.setUser(currentUser);
       setLoading(false);
+      setLoggedIn(true);
     } catch (err) {
       setLoading(false);
       setErrors([
@@ -77,12 +86,14 @@ const Login = () => {
     }
   };
 
-  return (
+  return loggedIn ? (
+    <Redirect to="/" />
+  ) : (
     <Grid className={classes.Login} textAlign="center" verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h1" icon color="orange" textAlign="center">
           <Icon name="btc" color="orange" />
-          Login
+          Login to StockChat
         </Header>
         <Form onSubmit={handleSubmit} size="large">
           <Segment>
@@ -168,4 +179,9 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state: AppState) => ({ user: state.user.currentUser });
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(UserActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

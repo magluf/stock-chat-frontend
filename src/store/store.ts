@@ -1,11 +1,13 @@
+/* eslint-disable no-underscore-dangle */
 import { createStore, Store } from 'redux';
-import { TeamsState } from './ducks/teams/types';
-import rootReducer from './ducks/rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import rootReducer from './ducks/root.reducer';
+import { UserState } from './ducks/user/types';
 
 export interface AppState {
-  teams: TeamsState;
+  user: UserState;
 }
 
-const store: Store<AppState> = createStore(rootReducer);
+const store: Store<AppState> = createStore(rootReducer, composeWithDevTools());
 
 export default store;

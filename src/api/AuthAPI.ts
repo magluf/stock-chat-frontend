@@ -6,5 +6,6 @@ export interface ILoginInfo {
 }
 
 export const login = (loginInfo: ILoginInfo) => {
+  axios.defaults.withCredentials = true;
   return axios.post('/auth/login', loginInfo);
 };

@@ -1,18 +1,15 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import AppRoutes from './App.routes';
-import store from './store/store';
+import { AppState } from './store/store';
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </Provider>
-  );
+  return <AppRoutes />;
 };
 
-export default App;
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.user.loading
+});
+
+export default connect(mapStateToProps, null)(App);
