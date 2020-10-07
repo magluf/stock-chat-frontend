@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
@@ -9,7 +9,6 @@ import { AppState } from '../../store/store';
 import * as UserActions from '../../store/ducks/user/actions';
 import { User } from '../../store/ducks/user/types';
 import { isLoggedIn } from '../../api/AuthAPI';
-import Spinner from '../../components/UI/Spinner';
 import { Channel } from '../../store/ducks/channel/types';
 
 import classes from './Home.module.scss';
@@ -23,19 +22,17 @@ interface IHomeProps {
 }
 
 const Home = (props: IHomeProps) => {
-  const [checkedIfLoggedIn, setCheckedIfLoggedIn] = useState(false);
-
   useEffect(() => {
     let checked = false;
     async function checkLoggedIn() {
       try {
         const res = await isLoggedIn();
         const currentUser: User = res.data.data;
-        props.setUser(currentUser);
-        if (!checked) setCheckedIfLoggedIn(true);
+        if (checked) {
+          props.setUser(currentUser);
+        }
       } catch (err) {
         props.clearUser();
-        if (!checked) setCheckedIfLoggedIn(true);
       }
     }
 
@@ -84,9 +81,7 @@ const Home = (props: IHomeProps) => {
       // </Grid>
     );
   }
-  if (!checkedIfLoggedIn) {
-    return <Spinner />;
-  }
+
   return <Redirect to="/login" />;
 };
 
