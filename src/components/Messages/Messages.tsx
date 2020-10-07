@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import { Segment, Comment } from 'semantic-ui-react';
-
-import { Message } from '../../store/ducks/message/types';
+import { Message as MessageModel } from '../../store/ducks/message/types';
 import classes from './Messages.module.scss';
 import MessagesHeader from './MessageHeader';
 import MessageForm from './MessageForm';
 import { Channel } from '../../store/ducks/channel/types';
 import { User } from '../../store/ducks/user/types';
+import { useInterval } from '../../hooks/useInterval';
+import { getMessages } from '../../api/MessageAPI';
+import Message from './Message';
 
 interface IMessages {
   currentChannel: Channel;
@@ -14,27 +16,50 @@ interface IMessages {
 }
 
 const Messages = (props: IMessages) => {
-  const [messages, setMessages] = useState([] as Message[]);
+  const [messages, setMessages] = useState([] as MessageModel[]);
 
-  const handleSetMessages = (message: Message) => {
-    setMessages([...messages, message]);
-    console.log('sendMessage -> message', message);
+  const messagesEndRef = (useRef(null) as unknown) as MutableRefObject<
+    HTMLDivElement
+  >;
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const handleSetMessages = (message: MessageModel) => {
+    setMessages([...messages, message]);
+  };
+
+  useInterval(async () => {
+    scrollToBottom();
+    const res = await getMessages(props.currentChannel._id);
+    setMessages(res.data.data);
+  }, 500);
 
   return (
     <>
-      <MessagesHeader />
+      <MessagesHeader channelName={props.currentChannel.channelName} />
 
       <Segment className={classes.MessagesMR}>
         <Comment.Group className={classes.Messages}>
           {messages.map((message) => {
-            console.log('Messages -> message', message);
-            return <p key={message._id}>{message.content}</p>;
+            return (
+              <Message
+                key={message._id}
+                _id={message._id}
+                content={message.content}
+                createdAt={message.createdAt}
+                author={message.author}
+                currentUser={props.currentUser}
+              />
+            );
           })}
+          <div ref={messagesEndRef} />
         </Comment.Group>
       </Segment>
 
       <MessageForm
+        scrollToBottom={scrollToBottom}
         currentUser={props.currentUser}
         currentChannel={props.currentChannel}
         setMessages={handleSetMessages}

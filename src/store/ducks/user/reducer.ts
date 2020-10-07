@@ -12,7 +12,6 @@ const INITIAL_STATE: UserState = {
 const userReducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UserActionTypes.SET_USER:
-      console.log('action.payload', action.payload);
       const currentUser: User = {
         _id: action.payload._id ? action.payload._id : action.payload._id,
         email: action.payload.email,

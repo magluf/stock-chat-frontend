@@ -7,5 +7,5 @@ export interface IChannel {
 }
 
 export const createChannel = (channel: IChannel) => {
-  return axios.post('/channel', channel);
+  return axios.post('/channels', channel);
 };

@@ -1,5 +1,8 @@
 import { action } from 'typesafe-actions';
 import { MessageActionTypes, Message } from './types';
 
-export const createMessage = (message: Message) =>
-  action(MessageActionTypes.CREATE_MESSAGE, message);
+export const setGeneralMessages = (messages: Message[]) =>
+  action(MessageActionTypes.SET_MESSAGES_GENERAL, messages);
+
+export const setTrivialMessages = (messages: Message[]) =>
+  action(MessageActionTypes.SET_MESSAGES_TRIVIAL, messages);

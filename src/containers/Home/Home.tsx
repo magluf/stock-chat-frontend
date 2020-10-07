@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Image, Segment } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
-import ColorPanel from '../../components/ColorPanel/ColorPanel';
 import SidePanel from '../SidePanel/SidePanel';
 import Messages from '../../components/Messages/Messages';
-import MetaPanel from '../../components/MetaPanel/MetaPanel';
 import { AppState } from '../../store/store';
 import * as UserActions from '../../store/ducks/user/actions';
 import { User } from '../../store/ducks/user/types';
@@ -20,7 +18,7 @@ interface IHomeProps {
   currentUser: User | null;
   currentChannel: Channel | null;
   channels: Channel[];
-  clearUser: () => void;
+  clearUser: any;
   setUser: (user: User) => void;
 }
 

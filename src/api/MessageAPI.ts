@@ -7,6 +7,10 @@ export interface IMessage {
   content: string;
 }
 
-export const createMessage = (channel: IMessage) => {
-  return axios.post('/message', channel);
+export const createMessage = (message: IMessage) => {
+  return axios.post('/messages', message);
+};
+
+export const getMessages = (channelId: string) => {
+  return axios.get(`/messages/${channelId}`);
 };
