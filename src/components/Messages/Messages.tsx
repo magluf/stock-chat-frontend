@@ -42,18 +42,22 @@ const Messages = (props: IMessages) => {
 
       <Segment className={classes.MessagesMR}>
         <Comment.Group className={classes.Messages}>
-          {messages.map((message) => {
-            return (
-              <Message
-                key={message._id}
-                _id={message._id}
-                content={message.content}
-                createdAt={message.createdAt}
-                author={message.author}
-                currentUser={props.currentUser}
-              />
-            );
-          })}
+          {messages
+            ? messages.length > 0
+              ? messages.map((message) => {
+                  return (
+                    <Message
+                      key={message._id}
+                      _id={message._id}
+                      content={message.content}
+                      createdAt={message.createdAt}
+                      author={message.author}
+                      currentUser={props.currentUser}
+                    />
+                  );
+                })
+              : null
+            : null}
           <div ref={messagesEndRef} />
         </Comment.Group>
       </Segment>
