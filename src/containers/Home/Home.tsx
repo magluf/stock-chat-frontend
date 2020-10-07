@@ -25,14 +25,10 @@ const Home = (props: IHomeProps) => {
   useEffect(() => {
     let checked = false;
     async function checkLoggedIn() {
-      try {
-        const res = await isLoggedIn();
-        const currentUser: User = res.data.data;
-        if (checked) {
-          props.setUser(currentUser);
-        }
-      } catch (err) {
-        props.clearUser();
+      const res = await isLoggedIn();
+      const currentUser: User = res.data.data;
+      if (checked) {
+        props.setUser(currentUser);
       }
     }
 
