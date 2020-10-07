@@ -31,9 +31,7 @@ const Home = (props: IHomeProps) => {
       try {
         const res = await isLoggedIn();
         const currentUser: User = res.data.data;
-        if (!props.currentUser) {
-          props.setUser(currentUser);
-        }
+        props.setUser(currentUser);
         if (!checked) setCheckedIfLoggedIn(true);
       } catch (err) {
         props.clearUser();
