@@ -17,11 +17,10 @@ const userReducer: Reducer<UserState> = (state = INITIAL_STATE, action) => {
         email: action.payload.email,
         username: action.payload.username
       };
-      console.log('currentUser', currentUser);
 
       return {
         ...state,
-        currentUser: action.payload,
+        currentUser,
         loading: false
       };
 
