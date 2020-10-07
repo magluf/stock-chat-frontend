@@ -16,9 +16,11 @@ const Message = (props: IMessageProps) => {
   const date = moment(props.createdAt).fromNow();
 
   const styleMessage = (messageAuthor: any, currentUserID: string) => {
-    if (messageAuthor.id === currentUserID) return classes.OwnMessage;
+    if (messageAuthor._id === currentUserID) {
+      return classes.OwnMessage;
+    }
     if (messageAuthor.username === 'StockBot') return classes.BotMessage;
-    return '';
+    return classes.RandoMessage;
   };
 
   return (

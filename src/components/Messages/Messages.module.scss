@@ -31,9 +31,13 @@
 }
 
 .BotMessage {
-  border-left: 2px solid #b413ec;
-  padding-left: 8px;
   a {
     color: #b413ec !important;
+  }
+}
+
+.RandoMessage {
+  a {
+    color: #a0a0a0 !important;
   }
 }
