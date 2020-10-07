@@ -12,5 +12,5 @@ export const createMessage = (message: IMessage) => {
 };
 
 export const getMessages = (channelId: string) => {
-  return axios.get(`/messages/${channelId}`);
+  return axios.get(`/messages/channel/${channelId}`);
 };
