@@ -4,7 +4,7 @@ export enum ChannelActionTypes {
 }
 
 export interface Channel {
-  id: number;
+  _id: string;
   channelName: string;
   description: string;
   creatorID: string;

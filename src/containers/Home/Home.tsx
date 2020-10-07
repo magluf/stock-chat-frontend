@@ -18,6 +18,7 @@ import classes from './Home.module.scss';
 
 interface IHomeProps {
   currentUser: User | null;
+  currentChannel: Channel | null;
   channels: Channel[];
   clearUser: () => void;
   setUser: (user: User) => void;
@@ -53,6 +54,7 @@ const Home = (props: IHomeProps) => {
       <Grid columns="equal">
         <Grid.Column width={3} className={classes.Column}>
           <SidePanel
+            key={props.currentUser._id}
             clearUser={props.clearUser}
             currentUser={props.currentUser}
             channels={props.channels}
@@ -60,7 +62,11 @@ const Home = (props: IHomeProps) => {
         </Grid.Column>
         <Grid.Column width={13}>
           <Grid.Column className={classes.MessagesColumn}>
-            <Messages />
+            <Messages
+              key={props.currentChannel?._id}
+              currentChannel={props.currentChannel as Channel}
+              currentUser={props.currentUser}
+            />
           </Grid.Column>
         </Grid.Column>
       </Grid>
@@ -90,7 +96,8 @@ const Home = (props: IHomeProps) => {
 
 const mapStateToProps = (state: AppState) => ({
   currentUser: state.user.currentUser,
-  channels: state.channel.channels
+  channels: state.channel.channels,
+  currentChannel: state.channel.currentChannel
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

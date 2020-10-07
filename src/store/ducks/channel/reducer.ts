@@ -4,20 +4,20 @@ import { ChannelState, ChannelActionTypes } from './types';
 const INITIAL_STATE: ChannelState = {
   channels: [
     {
-      id: 1,
+      _id: '5f7ce99e430700baa6e31f2f',
       channelName: 'general',
       creatorID: '5f7ce955430700baa6e31f28',
       description: 'Generalities.'
     },
     {
-      id: 2,
+      _id: '5f7ce9b9430700baa6e31f33',
       channelName: 'trivial',
       creatorID: '5f7ce955430700baa6e31f28',
       description: 'Trivialities.'
     }
   ],
   currentChannel: {
-    id: 1,
+    _id: '5f7ce99e430700baa6e31f2f',
     channelName: 'general',
     creatorID: '5f7ce955430700baa6e31f28',
     description: 'Generalities.'
@@ -34,7 +34,7 @@ const channelReducer: Reducer<ChannelState> = (
     case ChannelActionTypes.CREATE_CHANNEL:
       return {
         ...state,
-        data: state.channels.concat(action.payload.team),
+        data: state.channels.concat(action.payload),
         loading: false
       };
 

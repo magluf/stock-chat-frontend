@@ -11,7 +11,9 @@ interface IChannelProps {
 }
 
 const Channels = (props: IChannelProps) => {
-  const [activeChannel, setActiveChannel] = useState(1);
+  const [activeChannel, setActiveChannel] = useState(
+    '5f7ce99e430700baa6e31f2f'
+  );
 
   // const [channels, setChannels] = useState([]);
   // const [modal, setModal] = useState(false);
@@ -46,7 +48,7 @@ const Channels = (props: IChannelProps) => {
   //   event.preventDefault();
   //   if (isFormValid()) {
   //     const newChannel: IChannel = {
-  //       creator: props.currentUser.id as string,
+  //       creator: props.currentUser._id as string,
   //       details: channelDetails,
   //       name: channelName
   //     };
@@ -70,7 +72,7 @@ const Channels = (props: IChannelProps) => {
   // };
 
   const changeChannel = (channel: Channel) => {
-    setActiveChannel(channel.id);
+    setActiveChannel(channel._id);
     props.setChannel(channel);
   };
 
@@ -87,11 +89,11 @@ const Channels = (props: IChannelProps) => {
         {props.channels.map((channel) => {
           return (
             <Menu.Item
-              key={channel.id}
+              key={channel._id}
               onClick={() => changeChannel(channel)}
               name={channel.channelName}
               style={{ opacity: 0.7 }}
-              active={channel.id === activeChannel}
+              active={channel._id === activeChannel}
             >
               # {channel.channelName}
             </Menu.Item>

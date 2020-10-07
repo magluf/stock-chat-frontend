@@ -105,8 +105,7 @@ const Register = () => {
       };
 
       try {
-        const res = await createUser(newUser);
-        console.log('handleSubmit -> res', res);
+        await createUser(newUser);
         setLoading(false);
       } catch (err) {
         setLoading(false);
