@@ -22,12 +22,17 @@ enum ErrorTypes {
   APIError
 }
 
+interface ILoginProps {
+  setUser: (user: User) => void;
+  user: User | null;
+}
+
 interface Error {
   type: ErrorTypes;
   message: string;
 }
 
-const Login = (props: any) => {
+const Login = (props: ILoginProps) => {
   const [formValues, setFormValues] = useState({
     controls: {
       username: {

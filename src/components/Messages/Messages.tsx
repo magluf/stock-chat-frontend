@@ -33,8 +33,10 @@ const Messages = (props: IMessages) => {
   useInterval(async () => {
     scrollToBottom();
     const res = await getMessages(props.currentChannel._id);
-    setMessages(res.data.data);
-  }, 500);
+    const messagesArray: any[] = res.data.data;
+    messagesArray.reverse();
+    setMessages(messagesArray);
+  }, 1000); // It's dangerous to have it any shorter.
 
   return (
     <>

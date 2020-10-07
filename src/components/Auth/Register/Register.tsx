@@ -8,7 +8,7 @@ import {
   Message,
   Icon
 } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import classes from './Register.module.scss';
 import { IUser, createUser } from '../../../api/UserAPI';
 
@@ -61,6 +61,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState([] as Error[]);
+  const [registered, setRegistered] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const isConfirmPasswordValid = (confirmPassword: string) => {
@@ -106,6 +107,7 @@ const Register = () => {
 
       try {
         await createUser(newUser);
+        setRegistered(true);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -122,7 +124,9 @@ const Register = () => {
     setLoading(false);
   };
 
-  return (
+  return registered ? (
+    <Redirect to="/login" />
+  ) : (
     <Grid
       className={classes.Register}
       textAlign="center"
