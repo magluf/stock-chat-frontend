@@ -34,7 +34,7 @@ const Messages = (props: IMessages) => {
     scrollToBottom();
     const res = await getMessages(props.currentChannel._id);
     const messagesArray: any[] = res.data.data;
-    messagesArray.reverse();
+    if (messagesArray && messagesArray.length > 0) messagesArray.reverse();
     setMessages(messagesArray);
   }, 1000); // It's dangerous to have it any shorter.
 

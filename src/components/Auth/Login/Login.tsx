@@ -24,7 +24,6 @@ enum ErrorTypes {
 
 interface ILoginProps {
   setUser: (user: User) => void;
-  user: User | null;
 }
 
 interface Error {
