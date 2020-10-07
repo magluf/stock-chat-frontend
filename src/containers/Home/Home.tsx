@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Image, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -13,6 +13,8 @@ import { User } from '../../store/ducks/user/types';
 import { isLoggedIn } from '../../api/AuthAPI';
 import Spinner from '../../components/UI/Spinner';
 import { Channel } from '../../store/ducks/channel/types';
+
+import classes from './Home.module.scss';
 
 interface IHomeProps {
   currentUser: User | null;
@@ -48,24 +50,36 @@ const Home = (props: IHomeProps) => {
 
   if (props.currentUser) {
     return (
-      <Grid columns="equal" style={{ backgroud: '#eee' }}>
-        <Grid.Column>
-          <ColorPanel />
-        </Grid.Column>
-        <Grid.Column>
+      <Grid columns="equal">
+        <Grid.Column width={3} className={classes.Column}>
           <SidePanel
             clearUser={props.clearUser}
             currentUser={props.currentUser}
             channels={props.channels}
           />
         </Grid.Column>
-        <Grid.Column style={{ marginLeft: 320 }}>
-          <Messages />
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <MetaPanel />
+        <Grid.Column width={13}>
+          <Grid.Column className={classes.MessagesColumn}>
+            <Messages />
+          </Grid.Column>
         </Grid.Column>
       </Grid>
+      // <Grid>
+      //   <Grid.Row>
+      //     <Grid columns="1" style={{ backgroud: '#eee' }}>
+      //       <Grid.Column>
+      //         <SidePanel
+      //           clearUser={props.clearUser}
+      //           currentUser={props.currentUser}
+      //           channels={props.channels}
+      //         />
+      //       </Grid.Column>
+      //       <Grid.Column>
+      //         <Messages />
+      //       </Grid.Column>
+      //     </Grid>
+      //   </Grid.Row>
+      // </Grid>
     );
   }
   if (!checkedIfLoggedIn) {

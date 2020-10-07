@@ -15,9 +15,14 @@ const SidePanel = (props: ISidePanelProps) => (
   <Menu
     size="large"
     inverted
-    fixed="left"
+    fluid
     vertical
-    style={{ background: '#4c3c4c', fontSize: '1.2rem' }}
+    style={{
+      background: '#4c3c4c',
+      fontSize: '1.2rem',
+      height: '100vh',
+      borderRadius: '0'
+    }}
   >
     <UserPanel currentUser={props.currentUser} clearUser={props.clearUser} />
     <Channels channels={props.channels} />
