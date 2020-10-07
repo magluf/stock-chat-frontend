@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Comment } from 'semantic-ui-react';
+import { Comment, Icon } from 'semantic-ui-react';
 import { User } from '../../store/ducks/user/types';
 import classes from './Messages.module.scss';
 
@@ -15,15 +15,20 @@ interface IMessageProps {
 const Message = (props: IMessageProps) => {
   const date = moment(props.createdAt).fromNow();
 
-  const isOwnMessage = (messageAuthorID: string, currentUserID: string) => {
-    return messageAuthorID === currentUserID ? classes.OwnMessage : '';
+  const styleMessage = (messageAuthor: any, currentUserID: string) => {
+    if (messageAuthor.id === currentUserID) return classes.OwnMessage;
+    if (messageAuthor.username === 'StockBot') return classes.BotMessage;
+    return '';
   };
 
   return (
     <Comment>
       <Comment.Content
-        className={isOwnMessage(props.author._id, props.currentUser._id)}
+        className={styleMessage(props.author, props.currentUser._id)}
       >
+        {props.author.username === 'StockBot' ? (
+          <Icon name="btc" color="purple" />
+        ) : null}
         <Comment.Author as="a">{props.author.username}</Comment.Author>
         <Comment.Metadata>{date}</Comment.Metadata>
         <Comment.Text>{props.content}</Comment.Text>
