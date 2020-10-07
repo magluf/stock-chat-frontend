@@ -14,5 +14,5 @@ export const logout = () => {
 };
 
 export const isLoggedIn = () => {
-  return axios.get('/auth');
+  return axios.get('/auth/check');
 };
