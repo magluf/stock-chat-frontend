@@ -24,8 +24,8 @@ const MessageForm = (props: IMessageFormProps) => {
 
   const sendMessage = async () => {
     setLoading(true);
-    setMessage('');
     if (message !== '') {
+      setMessage('');
       const newMessage: IMessage = {
         _id: '',
         authorId: props.currentUser._id,
@@ -33,13 +33,17 @@ const MessageForm = (props: IMessageFormProps) => {
         content: message
       };
 
+      if (message.startsWith('/')) {
+        setLoading(false);
+      }
+
       try {
         setErrors([]);
         const res = await createMessage(newMessage);
         newMessage._id = res.data.data._id;
         props.setMessages(newMessage);
-        setLoading(false);
       } catch (err) {
+        setLoading(false);
         setErrors([...errors, { message: err.response }]);
       }
     }
