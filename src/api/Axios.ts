@@ -11,17 +11,9 @@ instance.defaults.withCredentials = true;
 
 instance.interceptors.request.use(
   (config) => {
-    console.log(config);
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  }
-);
-
-instance.interceptors.response.use(
-  (config) => {
-    console.log(config);
+    if (config.baseURL?.includes('herokuapp')) {
+      config.params = { ...config.params, heroku: true };
+    }
     return config;
   },
   (err) => {
