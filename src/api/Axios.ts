@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../store/store';
 
 const instance = axios.create({
   baseURL:
@@ -13,7 +14,10 @@ instance.interceptors.request.use(
   (config) => {
     if (config.baseURL?.includes('herokuapp')) {
       config.params = { ...config.params, heroku: true };
+      const token = store.getState().user.currentUser.token;
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (err) => {

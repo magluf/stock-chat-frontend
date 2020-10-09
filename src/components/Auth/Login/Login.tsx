@@ -24,6 +24,7 @@ enum ErrorTypes {
 
 interface ILoginProps {
   setUser: (user: User) => void;
+  setAuthToken: (token: string) => void;
 }
 
 interface Error {
@@ -73,7 +74,11 @@ const Login = (props: ILoginProps) => {
     try {
       const res = await login(loginInfo);
       const currentUser: User = res.data.data;
+      const token = res.data.data.token;
       props.setUser(currentUser);
+      if (token) {
+        props.setAuthToken(token);
+      }
       setLoading(false);
       setLoggedIn(true);
     } catch (err) {
