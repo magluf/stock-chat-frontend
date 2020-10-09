@@ -4,13 +4,13 @@ import { ChannelState, ChannelActionTypes } from './types';
 const INITIAL_STATE: ChannelState = {
   channels: [
     {
-      _id: '5f7e24055a8ac8114e8e9cd8',
+      _id: '5f7d63d29672610b98fe42cc',
       channelName: 'general',
       creatorID: '5f7e23375a8ac8114e8e9cd7',
       description: 'Generalities.'
     },
     {
-      _id: '5f7e243a5a8ac8114e8e9cd9',
+      _id: '5f7d63c49672610b98fe42ca',
       channelName: 'trivial',
       creatorID: '5f7e23375a8ac8114e8e9cd7',
       description: 'Trivialities.'

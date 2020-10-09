@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
 import SidePanel from '../SidePanel/SidePanel';
 import { AppState } from '../../store/store';
 import * as UserActions from '../../store/ducks/user/actions';
 import { User } from '../../store/ducks/user/types';
-import { isLoggedIn } from '../../api/AuthAPI';
 import { Channel } from '../../store/ducks/channel/types';
-import Spinner from '../../components/UI/Spinner';
 import MessagesContainer from '../MessagesContainer/MessagesContainer';
-
 import classes from './Home.module.scss';
 
 interface IHomeProps {
@@ -19,57 +15,32 @@ interface IHomeProps {
   currentChannel: Channel | null;
   channels: Channel[];
   clearUser: any;
-  setUser: (user: User) => void;
 }
 
 const Home = (props: IHomeProps) => {
-  const [loggedin, setLoggedin] = useState(false);
+  const { currentUser, clearUser, channels, currentChannel } = props;
 
-  useEffect(() => {
-    let checked = false;
-    async function checkLoggedIn() {
-      const res = await isLoggedIn();
-      const currentUser: User = res.data.data;
-      setLoggedin(true);
-      if (checked) {
-        props.setUser(currentUser);
-      }
-    }
-
-    checkLoggedIn();
-    return () => {
-      checked = true;
-    };
-  }, [props]);
-
-  if (props.currentUser) {
-    return (
-      <Grid columns="equal">
-        <Grid.Column width={3} className={classes.Column}>
-          <SidePanel
-            key={props.currentUser._id}
-            clearUser={props.clearUser}
-            currentUser={props.currentUser}
-            channels={props.channels}
+  return (
+    <Grid columns="equal">
+      <Grid.Column width={3} className={classes.Column}>
+        <SidePanel
+          key={currentUser?._id}
+          clearUser={clearUser}
+          currentUser={currentUser}
+          channels={channels}
+        />
+      </Grid.Column>
+      <Grid.Column width={13}>
+        <Grid.Column className={classes.MessagesColumn}>
+          <MessagesContainer
+            key={currentChannel?._id}
+            currentChannel={currentChannel as Channel}
+            currentUser={currentUser as User}
           />
         </Grid.Column>
-        <Grid.Column width={13}>
-          <Grid.Column className={classes.MessagesColumn}>
-            <MessagesContainer
-              key={props.currentChannel?._id}
-              currentChannel={props.currentChannel as Channel}
-              currentUser={props.currentUser}
-            />
-          </Grid.Column>
-        </Grid.Column>
-      </Grid>
-    );
-  }
-  if (!loggedin) {
-    return <Spinner />;
-  }
-
-  return <Redirect to="/login" />;
+      </Grid.Column>
+    </Grid>
+  );
 };
 
 const mapStateToProps = (state: AppState) => ({

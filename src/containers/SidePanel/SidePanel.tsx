@@ -6,7 +6,7 @@ import Channels from '../../components/Channels/Channels';
 import { Channel } from '../../store/ducks/channel/types';
 
 interface ISidePanelProps {
-  currentUser: User;
+  currentUser: User | null;
   channels: Channel[];
   clearUser: () => void;
 }

@@ -14,17 +14,19 @@ interface IMessages {
 
 const MessagesContainer = (props: IMessages) => {
   const [messages, setMessages] = useState([] as MessageModel[]);
+  const [loading, setLoading] = useState(true);
 
   useInterval(async () => {
     const res = await getMessages(props.currentChannel._id);
     const messagesArray: any[] = res.data.data;
     if (messagesArray && messagesArray.length > 0) messagesArray.reverse();
     setMessages(messagesArray);
+    setLoading(false);
   }, 1000); // It's dangerous to have it any shorter.
 
-  return messages.length > 0 ? (
+  return !loading ? (
     <Messages
-      messages={messages}
+      messages={messages && messages.length > 0 ? messages : []}
       key={props.currentChannel?._id}
       currentChannel={props.currentChannel as Channel}
       currentUser={props.currentUser}
