@@ -25,7 +25,6 @@ Front-end in React and Typescript for the StockChat App.
 # PERCEIVED ISSUES:
 
 - There are /major/ undocumented issues trying to implement sockets with mongoose during development, so I had to make a decision to diverge away from it, even if it's the obvious answer for a chat app. I had already set up most of the work with MongoDB and mongoose, so I didn't have the time to change approaches. So, I've implement polling (querying the database for new messages every 1) instead. Even if so, the technic for polling using hooks with React is quite good.
-- No unit tests;
 
 ---
 
