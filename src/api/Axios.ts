@@ -9,4 +9,24 @@ const instance = axios.create({
 
 instance.defaults.withCredentials = true;
 
+instance.interceptors.request.use(
+  (config) => {
+    console.log(config);
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
+instance.interceptors.response.use(
+  (config) => {
+    console.log(config);
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
 export default instance;
