@@ -12,7 +12,7 @@ Front-end in React and Typescript for the StockChat App.
 
 ### Postman collection for route testing:
 
-> https://www.getpostman.com/collections/227fce696dae1e977d37
+> https://www.getpostman.com/collections/616855defe343365b4b1
 
 ---
 
