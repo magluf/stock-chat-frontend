@@ -1,50 +1,97 @@
 # stock-chat-frontend
 
-## create-react-app generated instructions below:
+Front-end in React and Typescript for the StockChat App.
 
-#
+### Deployed app on Heroku:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> https://stock-chat-apa.herokuapp.com/
 
-## Available Scripts
+### Deployed API on Heroku:
 
-In the project directory, you can run:
+> https://stock-chat-api.herokuapp.com/api/v1
 
-### `yarn start`
+### Postman collection for route testing:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> https://www.getpostman.com/collections/227fce696dae1e977d37
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+---
 
-### `yarn test`
+# BONUS CHALLENGE TASKS ACCOMPLISHED:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Two chat rooms;
+- Unit testing creating a user with a not unique username;
+- Errors handled: invalid commands (only the `/stock=` command is available), invalid stock code and issues with retrieving data from [stooq.com](stooq.com);
 
-### `yarn build`
+# PERCEIVED ISSUES:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- There are /major/ undocumented issues trying to implement sockets with mongoose during development, so I had to make a decision to diverge away from it, even if it's the obvious answer for a chat app. I had already set up most of the work with MongoDB and mongoose, so I didn't have the time to change approaches. So, I've implement polling (querying the database for new messages every 1) instead. Even if so, the technic for polling using hooks with React is quite good.
+- No unit tests;
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Instructions for running the development environment of the frontend app:
 
-### `yarn eject`
+## Clone the repo and change directory to it
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+git clone https://github.com/magluf/stock-chat-frontend.git
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# or, if you have an SSH key setup for GitHub (recommended)
+git clone git@github.com:magluf/stock-chat-frontend.git
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Make sure you have [Node.js](https://nodejs.org/dist/v12.19.0/) v12.x installed.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+$ node -v
+v12.19.0
+```
 
-## Learn More
+## Make sure you have the [Yarn](https://classic.yarnpkg.com/en/docs/install/) package manager installed.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+$ yarn -v
+1.21.1
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Install dependencies and start the app (default port is 3000)
+
+```bash
+$ yarn
+[1/5] Validating package.json...
+[2/5] Resolving packages...
+[3/5] Fetching packages...
+.
+.
+.
+Done in 6.04s.
+$ yarn start
+Starting the development server...
+.
+.
+.
+Compiled successfully!
+
+You can now view stock-chat in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.0.110:3000
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+```
+
+# Instructions to use the StockChat app.
+
+### 1. The app opens up on the Login page by default, click on the Register link to register and be able to use the app.
+
+### 2, Register with an unique username, valid e-mail and password;
+
+### 3. Login with your username and password;
+
+### 4. Two available chat rooms: `#general` and `#trivial`;
+
+### 5. To get stock values from the `StockBot`, send the command `/stock=<VALID_STOCK_CODE>`;
+
+### 6. The bot will query [stooq.com](stooq.com) and reply to the chat with the current Close value, if the stock code is valid and the website is available.
