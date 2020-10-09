@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Segment, Comment } from 'semantic-ui-react';
 import { Message as MessageModel } from '../../store/ducks/message/types';
 import classes from './Messages.module.scss';
@@ -6,37 +6,30 @@ import MessagesHeader from './MessageHeader';
 import MessageForm from './MessageForm';
 import { Channel } from '../../store/ducks/channel/types';
 import { User } from '../../store/ducks/user/types';
-import { useInterval } from '../../hooks/useInterval';
-import { getMessages } from '../../api/MessageAPI';
 import Message from './Message';
 
 interface IMessages {
   currentChannel: Channel;
   currentUser: User;
+  messages: any[];
 }
 
 const Messages = (props: IMessages) => {
   const [messages, setMessages] = useState([] as MessageModel[]);
 
-  const messagesEndRef = (useRef(null) as unknown) as MutableRefObject<
-    HTMLDivElement
-  >;
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
   };
+
+  useEffect(scrollToBottom, [props.messages]);
 
   const handleSetMessages = (message: MessageModel) => {
     setMessages([...messages, message]);
   };
-
-  useInterval(async () => {
-    scrollToBottom();
-    const res = await getMessages(props.currentChannel._id);
-    const messagesArray: any[] = res.data.data;
-    if (messagesArray && messagesArray.length > 0) messagesArray.reverse();
-    setMessages(messagesArray);
-  }, 1000); // It's dangerous to have it any shorter.
 
   return (
     <>
@@ -44,28 +37,23 @@ const Messages = (props: IMessages) => {
 
       <Segment className={classes.MessagesMR}>
         <Comment.Group className={classes.Messages}>
-          {messages
-            ? messages.length > 0
-              ? messages.map((message) => {
-                  return (
-                    <Message
-                      key={message._id}
-                      _id={message._id}
-                      content={message.content}
-                      createdAt={message.createdAt}
-                      author={message.author}
-                      currentUser={props.currentUser}
-                    />
-                  );
-                })
-              : null
-            : null}
+          {props.messages.map((message) => {
+            return (
+              <Message
+                key={message._id}
+                content={message.content}
+                createdAt={message.createdAt}
+                username={message.username}
+                currentUser={props.currentUser}
+              />
+            );
+          })}
           <div ref={messagesEndRef} />
         </Comment.Group>
       </Segment>
 
       <MessageForm
-        scrollToBottom={scrollToBottom}
+        // scrollToBottom={scrollToBottom} // TODO: only needed if message not sent routine implemented..
         currentUser={props.currentUser}
         currentChannel={props.currentChannel}
         setMessages={handleSetMessages}

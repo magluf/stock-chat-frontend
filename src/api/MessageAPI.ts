@@ -2,8 +2,8 @@ import axios from './Axios';
 
 export interface IMessage {
   _id: string;
-  author: string;
-  channel: string;
+  authorId: string;
+  channelId: string;
   content: string;
 }
 

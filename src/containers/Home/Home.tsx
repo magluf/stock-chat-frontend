@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
 import SidePanel from '../SidePanel/SidePanel';
-import Messages from '../../components/Messages/Messages';
 import { AppState } from '../../store/store';
 import * as UserActions from '../../store/ducks/user/actions';
 import { User } from '../../store/ducks/user/types';
@@ -13,6 +12,7 @@ import Spinner from '../../components/UI/Spinner';
 import { Channel } from '../../store/ducks/channel/types';
 
 import classes from './Home.module.scss';
+import MessagesContainer from '../MessagesContainer/MessagesContainer';
 
 interface IHomeProps {
   currentUser: User | null;
@@ -60,7 +60,7 @@ const Home = (props: IHomeProps) => {
         </Grid.Column>
         <Grid.Column width={13}>
           <Grid.Column className={classes.MessagesColumn}>
-            <Messages
+            <MessagesContainer
               key={props.currentChannel?._id}
               currentChannel={props.currentChannel as Channel}
               currentUser={props.currentUser}
@@ -68,22 +68,6 @@ const Home = (props: IHomeProps) => {
           </Grid.Column>
         </Grid.Column>
       </Grid>
-      // <Grid>
-      //   <Grid.Row>
-      //     <Grid columns="1" style={{ backgroud: '#eee' }}>
-      //       <Grid.Column>
-      //         <SidePanel
-      //           clearUser={props.clearUser}
-      //           currentUser={props.currentUser}
-      //           channels={props.channels}
-      //         />
-      //       </Grid.Column>
-      //       <Grid.Column>
-      //         <Messages />
-      //       </Grid.Column>
-      //     </Grid>
-      //   </Grid.Row>
-      // </Grid>
     );
   }
   if (!checkedIfLoggedIn) {

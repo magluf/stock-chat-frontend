@@ -1,5 +1,3 @@
-import { User } from '../user/types';
-
 export enum MessageActionTypes {
   SET_MESSAGES_GENERAL = '[Message] Set messages @ General',
   SET_MESSAGES_TRIVIAL = '[Message] Set messages @ Trivial'
@@ -8,8 +6,9 @@ export enum MessageActionTypes {
 export interface Message {
   _id: string;
   content: string;
-  author: User;
-  channel: string;
+  authorId: string;
+  channelId: string;
+  username: string;
   createdAt: string;
 }
 

@@ -51,6 +51,7 @@
     "no-param-reassign": "off",
     "@typescript-eslint/camelcase": "off",
     "no-underscore-dangle": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "react/require-default-props": "off"
   }
 }

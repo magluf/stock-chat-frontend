@@ -10,7 +10,7 @@ interface IMessageFormProps {
   setMessages: any;
   currentChannel: Channel;
   currentUser: User;
-  scrollToBottom: any;
+  // scrollToBottom: any;
 }
 
 const MessageForm = (props: IMessageFormProps) => {
@@ -28,15 +28,15 @@ const MessageForm = (props: IMessageFormProps) => {
     if (message !== '') {
       const newMessage: IMessage = {
         _id: '',
-        author: props.currentUser._id,
-        channel: props.currentChannel._id,
+        authorId: props.currentUser._id,
+        channelId: props.currentChannel._id,
         content: message
       };
 
       try {
         setErrors([]);
         const res = await createMessage(newMessage);
-        props.scrollToBottom();
+        // props.scrollToBottom();
         newMessage._id = res.data.data._id;
         props.setMessages(newMessage);
         setLoading(false);
