@@ -36,15 +36,14 @@ const MessageForm = (props: IMessageFormProps) => {
       try {
         setErrors([]);
         const res = await createMessage(newMessage);
-        // props.scrollToBottom();
         newMessage._id = res.data.data._id;
         props.setMessages(newMessage);
         setLoading(false);
       } catch (err) {
         setErrors([...errors, { message: err.response }]);
-        setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
